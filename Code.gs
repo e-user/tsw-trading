@@ -72,11 +72,11 @@ function selling (table) {
   var _ = UnderscoreString.load(Underscore.load(), true);
   var spreadsheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(table);
   var items = rangeList(spreadsheet.getRange("A:A"));
-  var data = spreadsheet.getRange(1, 2, items.length, 4).getValues();
+  var data = spreadsheet.getRange(1, 2, _.max([items.length, 1]), 4).getValues();
   var _rarities = rarities();
   var _types = types();
   
-  return _.map(_.zip(items, data), function (vals) {
+  return _.isEmpty(items) ? [] : _.map(_.zip(items, data), function (vals) {
     var [name, [amount, rarity, price, type]] = vals;
     return {
       name: _.sprintf(_types[type], name), amount: amount, rarity: rarity, color: _rarities[rarity], price: price, type: type
@@ -125,4 +125,3 @@ function test () {
   //Logger.log(selling());
   updateScript();
 }
-

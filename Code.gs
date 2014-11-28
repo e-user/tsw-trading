@@ -105,17 +105,23 @@ function updateScript () {
   var cell = spreadsheet.getRange(2, 1).getCell(1, 1);
   var template = spreadsheet.getRange(1, 1).getCell(1, 1).getValue();
   
-  var s = '<font face=HEADLINE>Selling</face><br>';
+  var s = '';
   
-  s = _.reduce(sellingItems, function (s, item) {
-    return s += formatItem(item) + '<br>';
-  }, s);
+  if (!_.isEmpty(sellingItems)) {  
+    s += '<font face=HEADLINE>Selling</face><br>';
   
-  s += '<br><font face=HEADLINE>Buying</face><br>';
+    s = _.reduce(sellingItems, function (s, item) {
+      return s += formatItem(item) + '<br>';
+    }, s);
+  }
   
-  s = _.reduce(buyingItems, function (s, item) {
-    return s += formatItem(item) + '<br>';
-  }, s);
+  if (!_.isEmpty(buyingItems)) {  
+    s += '<br><font face=HEADLINE>Buying</face><br>';
+    
+    s = _.reduce(buyingItems, function (s, item) {
+      return s += formatItem(item) + '<br>';
+    }, s);
+  }
   
   cell.setValue(_.sprintf(template, s, (new Date()).toLocaleDateString('en-US')));
 }
